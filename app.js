@@ -3,6 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const notFound = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
+const connectDB = require("./db/connect");
+const productsRouter = require("./routes/products");
 
 // Server Setup
 const app = express();
@@ -11,9 +13,13 @@ const app = express();
 app.use(express.json());
 
 // Routes
-app.get("/", (res, req) => {
-  res.send("<h1> Store API </h1> <br/> <br/> <a href='/api/v1/products'</a> ");
+app.get("/", (req, res) => {
+  res.send(
+    "<h1> Store API </h1> <br/> <br/> <a href='/api/v1/products'>Link</a> "
+  );
 });
+
+app.use("/api/v1/products", productsRouter);
 
 // IMP ALWAYS KEEP MIDDLEWARE LIKE THE FOLLOWING BELOW ALL THE ROUTES
 // Middleware
@@ -27,6 +33,7 @@ const PORT = process.env.PORT || 6500;
 
 const startServer = async () => {
   try {
+    await connectDB(process.env.MONGO_URI);
     app.listen(PORT, () => {
       console.log(`Server is listening on port ${PORT}`);
     });
