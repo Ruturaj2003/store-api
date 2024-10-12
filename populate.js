@@ -11,7 +11,7 @@ const start = async () => {
 
     await Product.create(jsonProducts);
 
-    console.log("Sucssess");
+    console.log("Success");
     process.exit(0);
   } catch (error) {
     console.log(error);
